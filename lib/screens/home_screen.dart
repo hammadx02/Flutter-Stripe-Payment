@@ -56,11 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
       await Stripe.instance
           .initPaymentSheet(
             paymentSheetParameters: SetupPaymentSheetParameters(
-                setupIntentClientSecret: 'My secret key',
+                // setupIntentClientSecret: 'sk_test_51PhEebLJUGaiFTfb6WahS97QgaAgLfK8FibaG6sZMbmn5B6qZbF6W5JyDz3hPDkPgdmnzFJGCRMG1IXoOhQcEADk00giOhgWed',
                 paymentIntentClientSecret: paymentIntentData![
                     'client_secret'], // Gotten from payment intent
-                customFlow: true,
-                style: ThemeMode.dark,
+                // customFlow: true,
+                // style: ThemeMode.dark,
                 merchantDisplayName: 'Hammad'),
           )
           .then((value) {});
@@ -76,7 +76,13 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
         // clear payment Intent variable after successful payment
-        paymentIntentData = null;
+        setState(() {
+           paymentIntentData = null;
+        });
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("paid successfully")));
+       
       });
     } catch (e) {
       print('$e');
@@ -93,12 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // make post request to stripe
       var response = await http.post(
-          Uri.parse('https://api.stripe.com/v1/payment_intents'),
-          headers: {
-            'Authorization': 'Bearer ',
-            'Content-Type': 'application/x-www-form-urlencoded',
-          });
-      return json.decode(response.body);
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        body: body,
+        headers: {
+          // 'Authorization': 'Bearer sk_test_51PhEebLJUGaiFTfb6WahS97QgaAgLfK8FibaG6sZMbmn5B6qZbF6W5JyDz3hPDkPgdmnzFJGCRMG1IXoOhQcEADk00giOhgWed',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      );
+      return jsonDecode(response.body.toString());
     } catch (e) {
       print('exception: $e');
     }
