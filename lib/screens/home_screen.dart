@@ -56,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
       await Stripe.instance
           .initPaymentSheet(
             paymentSheetParameters: SetupPaymentSheetParameters(
-                // setupIntentClientSecret: 'sk_test_51PhEebLJUGaiFTfb6WahS97QgaAgLfK8FibaG6sZMbmn5B6qZbF6W5JyDz3hPDkPgdmnzFJGCRMG1IXoOhQcEADk00giOhgWed',
                 paymentIntentClientSecret: paymentIntentData![
                     'client_secret'], // Gotten from payment intent
                 // customFlow: true,
